@@ -22,6 +22,33 @@ o: orientation of the current square:
 
 void DrawHilbertCurveRec(Mat1b& mat, unsigned x, unsigned y, unsigned l, unsigned d, unsigned char o) {
 
+    if (d + 2 < l) {
+
+        unsigned char o0 = o, o1 = o, o2 = o, o3 = o;
+
+        if (o == 0) {
+            o0 = 1;
+            o1 = 3;
+        }
+        if (o == 1) {
+            o0 = 0;
+            o2 = 2;
+        }
+        if (o == 2) {
+            o2 = 1;
+            o3 = 3;
+        }
+        if (o == 3) {
+            o1 = 0;
+            o3 = 2;
+        }
+
+        DrawHilbertCurveRec(mat, x, y, (l - d) / 2, d, o0);
+        DrawHilbertCurveRec(mat, x + (l - d) / 2 + d, y, (l - d) / 2, d, o1);
+        DrawHilbertCurveRec(mat, x, y + (l - d) / 2 + d, (l - d) / 2, d, o2);
+        DrawHilbertCurveRec(mat, x + (l - d) / 2 + d, y + (l - d) / 2 + d, (l - d) / 2, d, o3);
+    }
+
     if (o == 0) {
         for (unsigned c = x + (l - d - 2) / 2; c < (x + (l - d - 2) / 2 + d + 2); c++) {
             mat(y + (l + d) / 2, c) = 1;
@@ -54,35 +81,7 @@ void DrawHilbertCurveRec(Mat1b& mat, unsigned x, unsigned y, unsigned l, unsigne
             mat(y, c) = 1;
             mat(y + l - 1, c) = 1;
         }
-    }
-
-
-    if (d + 2 < l) {
-
-        unsigned char o0 = o, o1 = o, o2 = o, o3 = o;
-
-        if (o == 0) {
-            o0 = 1;
-            o1 = 3;
-        }
-        if (o == 1) {
-            o0 = 0;
-            o2 = 2;
-        }
-        if (o == 2) {
-            o2 = 1;
-            o3 = 3;
-        }
-        if (o == 3) {
-            o1 = 0;
-            o3 = 2;
-        }
-
-        DrawHilbertCurveRec(mat, x, y, (l - d) / 2, d, o0);
-        DrawHilbertCurveRec(mat, x + (l - d) / 2 + d, y, (l - d) / 2, d, o1);
-        DrawHilbertCurveRec(mat, x, y + (l - d) / 2 + d, (l - d) / 2, d, o2);
-        DrawHilbertCurveRec(mat, x + (l - d) / 2 + d, y + (l - d) / 2 + d, (l - d) / 2, d, o3);
-    }
+    }    
 }
 
 /*
